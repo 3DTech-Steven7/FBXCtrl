@@ -9,6 +9,11 @@ MFBXControl::MFBXControl(FbxString InFBXPath)
     pFBXPath = InFBXPath;
 }
 
+MFBXControl::MFBXControl(char* InFBXPath)
+{
+    pFBXPath = InFBXPath;
+}
+
 MFBXControl::~MFBXControl()
 {
     lSdkManager->Destroy();
@@ -38,6 +43,8 @@ bool MFBXControl::InitFbxScene()
 // {
 //     Super::~Super();
 // }
+
+
 
 FbxString MFBXRizomUVImp::GetLongName(const FbxProperty* PropertyNode, const FbxString* CurrentName) const
 {
@@ -120,14 +127,14 @@ void MFBXRizomUVExp::FromDictCopyProperty(FbxObject* InNode, PropertyDict& Prope
     }
 }
 
-void MFBXRizomUVExp::CreateDocumentInfo(MFBXRizomUVImp ImpNode) const
+void MFBXRizomUVExp::CreateDocumentInfo(MFBXRizomUVImp* ImpNode) const
 {
     FbxDocument* documentNode = lScene->GetRootDocument();
-    PropertyDict PropertyInfo = ImpNode.GetDocumentProperties();
+    PropertyDict PropertyInfo = ImpNode->GetDocumentProperties();
     FromDictCopyProperty(documentNode, PropertyInfo);
 }
 
-void MFBXRizomUVExp::Save() const
+bool MFBXRizomUVExp::Save() const
 {
-    SaveScene(lSdkManager, lScene, pFBXPath);
+    return SaveScene(lSdkManager, lScene, pFBXPath);
 }

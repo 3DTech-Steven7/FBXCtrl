@@ -1,17 +1,12 @@
-﻿#include "utils.h"
+﻿#define PY_SSIZE_T_CLEAN
 #include <Python.h>
+#include "utils.h"
 #include "PyFBXControl.h"
 
-
-
 static PyMethodDef SpamMethods[] = {
-
-    //{"getScale", static_cast<PyCFunction>(MFBXControl::py_get_scale), METH_VARARGS | METH_KEYWORDS, get_scale},
-    {nullptr, nullptr, 0, nullptr}
-
+    {"CopyData",  (PyCFunction)PyFBXControl::py_CopyData, METH_VARARGS | METH_KEYWORDS, CopyData},
+    {NULL, NULL, 0, NULL}
 };
-
-
 
 #if PYTHON_ABI_VERSION == 2
 PyMODINIT_FUNC initFbxCtrl(void)
@@ -20,33 +15,17 @@ PyMODINIT_FUNC initFbxCtrl(void)
 };
 
 #elif PYTHON_ABI_VERSION == 3
-static struct PyModuleDef spammodule = {
-    PyModuleDef_HEAD_INIT,
-    STRING(MODULE_NAME), /* name of module */
-    nullptr, /* module documentation, may be NULL */
-    -1, /* size of per-interpreter state of the module,
-				 or -1 if the module keeps state in global variables. */
-    SpamMethods
+
+static PyModuleDef spammodule = {
+    .m_base = PyModuleDef_HEAD_INIT,
+    .m_name = MODULENAME,
+    .m_doc = "Example module that creates an extension type.",
+    .m_size = -1,
+    .m_methods = SpamMethods
 };
 
-PyMODINIT_FUNC PYINIT_FUNCTION(void)
+PyMODINIT_FUNC PyInit_FbxCtrl_Py39(void)
 {
-    // PyObject *m;
-    // if (PyType_Ready(&spammodule) < 0)
-    //     return NULL;
-    //
-    // m = PyModule_Create(&FBXCtrlmodule);
-    // if (m == NULL)
-    //     return NULL;
-    //
-    // Py_INCREF(&spammodule);
-    // if (PyModule_AddObject(m, STRING(FBXCtrlObject), (PyObject *) &spammodule) < 0) {
-    //     Py_DECREF(&spammodule);
-    //     Py_DECREF(m);
-    //     return NULL;
-    // }
-    //
-    // return m;
     return PyModule_Create(&spammodule);
 };
 #endif

@@ -86,6 +86,7 @@ bool SaveScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename,
     // Initialize the exporter by providing a filename.
     if (lExporter->Initialize(pFilename, pFileFormat, pManager->GetIOSettings()) == false)
     {
+        FBXSDK_printf("FilePath: %s\n", pFilename);
         FBXSDK_printf("Call to FbxExporter::Initialize() failed.\n");
         FBXSDK_printf("Error returned: %s\n\n", lExporter->GetStatus().GetErrorString());
         return false;
@@ -124,6 +125,7 @@ bool LoadScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename)
     if (!lImportStatus)
     {
         FbxString error = lImporter->GetStatus().GetErrorString();
+        FBXSDK_printf("FilePath: %s\n", pFilename);
         FBXSDK_printf("Call to FbxImporter::Initialize() failed.\n");
         FBXSDK_printf("Error returned: %s\n\n", error.Buffer());
 

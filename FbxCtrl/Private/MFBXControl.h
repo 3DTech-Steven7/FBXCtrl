@@ -23,6 +23,7 @@ class MFBXControl
 {
 public:
     MFBXControl(FbxString InFBXPath);
+    MFBXControl(char* InFBXPath);
     ~MFBXControl();
 
     bool InitFbxScene();
@@ -38,9 +39,7 @@ public:
 
 class MFBXRizomUVImp : public MFBXControl
 {
-    using Super = MFBXControl;
 public:
-    // MFBXRizomUVImp(FbxString InFBXPath);
     // ~MFBXRizomUVImp();
 
     FbxString GetLongName(const FbxProperty* PropertyNode, const FbxString* CurrentName) const;
@@ -55,14 +54,12 @@ public:
 
 class MFBXRizomUVExp : public MFBXControl
 {
-    using Super = MFBXControl;
 public:
     void FromDictCopyProperty(FbxObject* InNode, PropertyDict& PropertyInfo) const;
 
-    void CreateDocumentInfo(MFBXRizomUVImp ImpNode) const;
+    void CreateDocumentInfo(MFBXRizomUVImp* ImpNode) const;
 
     //void CreateGeometryInfo(FbxNode* InNode);
 
-    void Save() const;
+    bool Save() const;
 };
-
