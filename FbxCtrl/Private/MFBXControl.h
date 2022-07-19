@@ -4,19 +4,20 @@
 #include <map>
 
 
-using namespace std;
+using namespace std; // NOLINT(clang-diagnostic-header-hygiene)
 
-using PropertyDict = map<FbxString, FbxProperty*>;
+using PropertyDict = map<FbxString, FbxProperty>;
 using LayerDict = map<FbxUInt8, FbxLayer*>;
+
 
 struct SGeometryInfo
 {
-    FbxGeometry Geometry;
+    FbxGeometry* Geometry = nullptr;
     LayerDict LayerInfo;
     PropertyDict PropertyInfo;
 };
 
-using Geometrydict = map<FbxUInt16, SGeometryInfo*>;
+using Geometrydict = map<FbxUInt16, SGeometryInfo>;
 
 
 class MFBXControl
@@ -26,7 +27,7 @@ public:
     MFBXControl(char* InFBXPath);
     ~MFBXControl();
 
-    bool InitFbxScene();
+    bool InitFbxScene(bool bLoad = true);
 
 public:
     FbxManager* lSdkManager;
@@ -42,14 +43,14 @@ class MFBXRizomUVImp : public MFBXControl
 public:
     // ~MFBXRizomUVImp();
 
-    FbxString GetLongName(const FbxProperty* PropertyNode, const FbxString* CurrentName) const;
+    FbxString GetLongName(FbxProperty PropertyNode, const FbxString* CurrentName) const;
 
-    PropertyDict GetAllChildProperty(FbxProperty* PropertyNode) const;
+    PropertyDict GetAllChildProperty(FbxProperty PropertyNode) const;
 
     [[nodiscard("Ignoring the return value will result in memory leaks.")]]
     PropertyDict GetDocumentProperties() const;
 
-    // Geometrydict GetGeometryProperties();
+    Geometrydict GetGeometryProperties() const;
 };
 
 class MFBXRizomUVExp : public MFBXControl
@@ -57,9 +58,13 @@ class MFBXRizomUVExp : public MFBXControl
 public:
     void FromDictCopyProperty(FbxObject* InNode, PropertyDict& PropertyInfo) const;
 
-    void CreateDocumentInfo(MFBXRizomUVImp* ImpNode) const;
+    void CreateDocumentInfo(const MFBXRizomUVImp* ImpNode) const;
 
-    //void CreateGeometryInfo(FbxNode* InNode);
+    void CreateGeometryInfo(const MFBXRizomUVImp* ImpNode, bool bInit) const;
 
-    bool Save() const;
+    static void SetLayerUserData(FbxGeometry* & geometry_exp, LayerDict& InLayerDict);
+
+    bool Save(int fileFormat) const;
+
+    void CreateInitMesh(const char* pName) const;
 };

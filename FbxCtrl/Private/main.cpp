@@ -4,17 +4,20 @@
 #include "PyFBXControl.h"
 
 static PyMethodDef SpamMethods[] = {
-    {"CopyData",  (PyCFunction)PyFBXControl::py_CopyData, METH_VARARGS | METH_KEYWORDS, CopyData},
-    {NULL, NULL, 0, NULL}
+    // ReSharper disable once CppCStyleCast
+    {"CopyData", (PyCFunction)PyFBXControl::py_CopyData, METH_VARARGS | METH_KEYWORDS, CopyData},
+    // NOLINT(clang-diagnostic-cast-function-type)
+    {nullptr, nullptr, 0, nullptr}
 };
 
-#if PYTHON_ABI_VERSION == 2
-PyMODINIT_FUNC initFbxCtrl(void)
+#ifndef PYTHON_ABI_VERSION // NOLINT(clang-diagnostic-undef)
+PyMODINIT_FUNC PYINIT_FUNCTION(void)
 {
-	(void)Py_InitModule(MODULE_NAME, SpamMethods, "My maya extension module.");
-};
+    (void)Py_InitModule(MODULENAME, SpamMethods, "My maya extension module.");
+}
 
-#elif PYTHON_ABI_VERSION == 3
+
+#else
 
 static PyModuleDef spammodule = {
     .m_base = PyModuleDef_HEAD_INIT,
@@ -24,7 +27,7 @@ static PyModuleDef spammodule = {
     .m_methods = SpamMethods
 };
 
-PyMODINIT_FUNC PyInit_FbxCtrl_Py39(void)
+PyMODINIT_FUNC PYINIT_FUNCTION(void)
 {
     return PyModule_Create(&spammodule);
 };
