@@ -10,6 +10,7 @@ using PropertyDict = map<FbxString, FbxProperty>;
 using LayerDict = map<FbxUInt8, FbxLayer*>;
 
 
+class MFBXRizomUVExp;
 struct SGeometryInfo
 {
     FbxGeometry* Geometry = nullptr;
@@ -28,6 +29,7 @@ public:
     ~MFBXControl();
 
     bool InitFbxScene(bool bLoad = true);
+    bool Save(int fileFormat) const;
 
 public:
     FbxManager* lSdkManager;
@@ -51,6 +53,7 @@ public:
     PropertyDict GetDocumentProperties() const;
 
     Geometrydict GetGeometryProperties() const;
+    bool Save(MFBXRizomUVExp* ExpNode, int fileFormat) const;
 };
 
 class MFBXRizomUVExp : public MFBXControl
@@ -63,8 +66,6 @@ public:
     void CreateGeometryInfo(const MFBXRizomUVImp* ImpNode, bool bInit) const;
 
     static void SetLayerUserData(FbxGeometry* & geometry_exp, LayerDict& InLayerDict);
-
-    bool Save(int fileFormat) const;
-
+    
     void CreateInitMesh(const char* pName) const;
 };

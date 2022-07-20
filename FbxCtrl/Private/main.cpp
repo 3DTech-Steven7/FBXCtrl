@@ -6,6 +6,7 @@
 static PyMethodDef SpamMethods[] = {
     // ReSharper disable once CppCStyleCast
     {"CopyData", (PyCFunction)PyFBXControl::py_CopyData, METH_VARARGS | METH_KEYWORDS, CopyData},
+    {"InitData", (PyCFunction)PyFBXControl::py_InitData, METH_VARARGS | METH_KEYWORDS, CopyData},
     // NOLINT(clang-diagnostic-cast-function-type)
     {nullptr, nullptr, 0, nullptr}
 };
@@ -15,7 +16,6 @@ PyMODINIT_FUNC PYINIT_FUNCTION(void)
 {
     (void)Py_InitModule(MODULENAME, SpamMethods, "My maya extension module.");
 }
-
 
 #else
 

@@ -42,6 +42,12 @@ bool MFBXControl::InitFbxScene(bool bLoad)
     return bResult;
 }
 
+bool MFBXControl::Save(const int fileFormat) const
+{
+    return SaveScene(lSdkManager, lScene, pFBXPath, fileFormat);
+}
+
+
 FbxString MFBXRizomUVImp::GetLongName(const FbxProperty PropertyNode, const FbxString* CurrentName) const
 {
     FbxString ChildName = *CurrentName;
@@ -130,6 +136,11 @@ Geometrydict MFBXRizomUVImp::GetGeometryProperties() const
     return geometry_dict;
 }
 
+bool MFBXRizomUVImp::Save(MFBXRizomUVExp* ExpNode, const int fileFormat) const
+{
+    return SaveScene(ExpNode->lSdkManager, ExpNode->lScene, pFBXPath, fileFormat);
+}
+
 void MFBXRizomUVExp::FromDictCopyProperty(FbxObject* InNode, PropertyDict& PropertyInfo) const
 {
     PropertyDict::iterator it;
@@ -199,11 +210,6 @@ void MFBXRizomUVExp::SetLayerUserData(FbxGeometry* & geometry_exp, LayerDict& In
             layer->SetUserData(user_data);
         }
     }
-}
-
-bool MFBXRizomUVExp::Save(const int fileFormat) const
-{
-    return SaveScene(lSdkManager, lScene, pFBXPath, fileFormat);
 }
 
 void MFBXRizomUVExp::CreateInitMesh(const char* pName) const
